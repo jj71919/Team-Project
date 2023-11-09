@@ -11,9 +11,10 @@ class Team{
     
 public:
     Team();
+    Team(string country);
     Team(string,int,vector<Player>*);
     void display();
-    void add(Player);
+    void addPlayer(Player);
     
 private:
     string country;
