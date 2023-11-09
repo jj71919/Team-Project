@@ -2,7 +2,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <map>
 #include "Player.h"
+#include "Team.h"
 using namespace std;
 
 bool operator < (const Player& lhs, const Player& rhs) {
@@ -45,8 +47,6 @@ int main(int argc, const char * argv[]) {
     }
     //Create a vector that can hold player objects
     //Adds text from file into vector
-    vector<Player> USA;
-    vector<Player> CZE;
     vector<Player> players;
     int rank, points;
     string lastName, firstName, country;
@@ -59,7 +59,21 @@ int main(int argc, const char * argv[]) {
     int x = players.size();
     bubbleSort(players,x);
     int i = 0;
-    for(i = 0; i < players.size() ; i++){
-        players.at(i).display();
+    string currCountry = players.at(0).getCountry();
+    Team myTeam(currCountry);
+    for(i = 1; i < players.size() ; i++){
+        //players.at(i).display();
+        if(players.at(i).getCountry() == currCountry){
+            myTeam.addPlayer(players.at(i));
+        }else{
+            currCountry = players.at(i).getCountry();
+            Team myTeam(currCountry);
+            //Add new team to  TEAM vector here
+            myTeam.addPlayer(players.at(i));
+        }
+        
     }
+    //Make vector of teams
+    //every time u make team add to vector and increase counter
+    
 }
