@@ -56,22 +56,27 @@ int main(int argc, const char * argv[]) {
         players.push_back(aPlayer);
         
     }
+    vector<Team> teams;
     int x = players.size();
     bubbleSort(players,x);
-    int i = 0;
     string currCountry = players.at(0).getCountry();
     Team myTeam(currCountry);
-    for(i = 1; i < players.size() ; i++){
-        //players.at(i).display();
+    for(int i = 1; i < players.size() ; i++){
+       // teams.at(i).display();
         if(players.at(i).getCountry() == currCountry){
             myTeam.addPlayer(players.at(i));
         }else{
+            teams.push_back(myTeam);
             currCountry = players.at(i).getCountry();
             Team myTeam(currCountry);
             //Add new team to  TEAM vector here
             myTeam.addPlayer(players.at(i));
+            i++;
         }
         
+    }
+    for(int i = 0; i < teams.size(); i++){
+        teams.at(i).display();
     }
     //Make vector of teams
     //every time u make team add to vector and increase counter
