@@ -3,8 +3,8 @@
 #include <vector>
 #include <string>
 #include <map>
-#include "Player.h"
-#include "Team.h"
+#include "Player.hpp"
+#include "Team.hpp"
 using namespace std;
 
 bool operator < (const Player& lhs, const Player& rhs) {
@@ -43,9 +43,7 @@ void addPointsToPlayer(vector<Team> &teams,string tName, string pName, int pts){
             for(int z = 0; z < teams.at(i).getNumPlayers(); z++){
                 if(vect.at(z).getfirstName() == pName){
                     vect.at(z).addPoints(pts);
-                    for(int y = 0; y < vect.size();y++){
-                        teams.at(i).addPlayer(vect.at(y));
-                    }
+                    teams.at(i).setPlayer(z, vect);
                     return;
                 }
             }
@@ -83,7 +81,7 @@ int main(int argc, const char * argv[]) {
     string currCountry = players.at(0).getCountry();
     Team myTeam(currCountry);
     for(int i = 1; i < players.size() ; i++){
-       // teams.at(i).display();
+           //teams.at(i).display();
         if(players.at(i).getCountry() == currCountry){
             myTeam.addPlayer(players.at(i));
         }else{
@@ -97,6 +95,7 @@ int main(int argc, const char * argv[]) {
         
     }
     teams.push_back(myTeam);
+    
     string answer;
     cout << "Would you like to add points? ";
     cin >> answer;
