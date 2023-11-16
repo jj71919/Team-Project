@@ -18,6 +18,7 @@ void Team:: addPlayer(Player aPlayer){
 }
 
 void Team::display(){
+    cout << "Team name: " << country <<  endl;
     for(int i =0; i < teamPlayers->size(); i++){
         teamPlayers->at(i).display();
     }
