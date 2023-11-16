@@ -35,6 +35,8 @@ class Player{
     Player operator+ (int);
     
     void display();
+    
+    void addPoints(int);
 
     //void selectionSort(vector<Player> z);
     
@@ -46,6 +48,8 @@ class Player{
     int mrank;
     int mpoints;
 };
+
+      
 
       
 
