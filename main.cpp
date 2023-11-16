@@ -35,6 +35,18 @@ void bubbleSort(vector<TYPE> &z, int n){
             break;
     }
 }
+template <typename TYPE>
+void addPointsToPlayer(vector<TYPE> &vect,string tName, string pName, int pts){
+    for(int i = 0; i < vect.size(); i++){
+        if(vect.at(i) == tName){
+            
+        }
+    }
+}
+
+
+
+
 
 int main(int argc, const char * argv[]) {
     string input;
@@ -68,15 +80,26 @@ int main(int argc, const char * argv[]) {
         }else{
             teams.push_back(myTeam);
             currCountry = players.at(i).getCountry();
-            Team myTeam(currCountry);
+            myTeam = Team(currCountry);
             //Add new team to  TEAM vector here
             myTeam.addPlayer(players.at(i));
             i++;
         }
         
     }
-    for(int i = 0; i < teams.size(); i++){
-        teams.at(i).display();
+    teams.push_back(myTeam);
+    
+    string look;
+    cout << "Enter a country name: ";
+    cin >> look;
+    while(look != "quit"){
+        for(int i = 0; i < teams.size(); i++){
+            if(teams.at(i).getCountry() == look){
+                teams.at(i).display();
+            }
+        }
+        cout << "Enter a country name: ";
+        cin >> look;
     }
     //Make vector of teams
     //every time u make team add to vector and increase counter
