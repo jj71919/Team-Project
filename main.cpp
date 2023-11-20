@@ -3,8 +3,8 @@
 #include <vector>
 #include <string>
 #include <map>
-#include "Player.hpp"
-#include "Team.hpp"
+#include "Player.h"
+#include "Team.h"
 using namespace std;
 
 bool operator < (const Player& lhs, const Player& rhs) {
@@ -13,6 +13,26 @@ bool operator < (const Player& lhs, const Player& rhs) {
 
 bool operator > (const Player& lhs, const Player& rhs) {
     return lhs.getCountry() > rhs.getCountry();
+}
+
+bool operator == (const Player& lhs, string rhs) {
+    return lhs.getfirstName() == rhs;
+}
+
+bool operator <= (const Player& lhs, const  string& rhs) {
+    return lhs.getfirstName() <= rhs;
+}
+
+
+int look(vector<Player> &v,string input){
+    int i;
+    //Run thru vector to find player name, if name is found call function getLastname and display the player
+    for(i = 0; i < v.size() && v.at(i).getfirstName() <= input ; i++){
+        if(v.at(i).getfirstName() == input){
+            return i;
+        }
+    }
+    return -1;
 }
 
 
@@ -51,7 +71,15 @@ void addPointsToPlayer(vector<Team> &teams,string tName, string pName, int pts){
     }
 }
 
-
+int menu(){
+    cout<< "Select an option" << endl;
+    cout << "0. TO QUIT " << endl;
+    cout << "1. Display all teams " << endl;
+    cout << "2. Search for team " << endl;
+    cout << "3. Search for player " << endl;
+    cout << "4. Add points " << endl;
+    return 0;;
+}
 
 
 
@@ -75,13 +103,17 @@ int main(int argc, const char * argv[]) {
         players.push_back(aPlayer);
         
     }
+    
+    
+    
     vector<Team> teams;
     int x = players.size();
     bubbleSort(players,x);
+    
     string currCountry = players.at(0).getCountry();
     Team myTeam(currCountry);
     for(int i = 1; i < players.size() ; i++){
-           //teams.at(i).display();
+        // teams.at(i).display();
         if(players.at(i).getCountry() == currCountry){
             myTeam.addPlayer(players.at(i));
         }else{
@@ -96,48 +128,80 @@ int main(int argc, const char * argv[]) {
     }
     teams.push_back(myTeam);
     
-    string answer;
-    cout << "Would you like to add points? ";
-    cin >> answer;
-    if(answer == "NO"){
-        string look;
-        cout << "Enter a country name: ";
-        cin >> look;
-        cout << " ";
-        while(look != "quit"){
+
+    // Display menu
+    int selection;
+    cout << menu();
+    
+    // Get user input
+    cout << "Enter your choice: ";
+    cin >> selection;
+    while(selection != 0){
+        // Switch statement
+        if(selection == 1){
+            cout << "Displaying all teams..." << endl;
+            for(int i = 0; i < teams.size(); i++){
+                teams.at(i).display();
+            }
+            
+            cout << " " << endl;
+            cout << menu();
+            cout << "Enter your choice: ";
+            cin >> selection;
+            
+        }else if (selection == 2){
+            string look;
+            cout << "Searching for team..." << endl;
+            cout << "Enter a country name: ";
+            cin >> look;
+            cout << " ";
             for(int i = 0; i < teams.size(); i++){
                 if(teams.at(i).getCountry() == look){
                     teams.at(i).display();
                 }
             }
-            cout << "Enter a country name: ";
-            cin >> look;
+            
+            cout << " " << endl;
+            cout << menu();
+            cout << "Enter your choice: ";
+            cin >> selection;
+            
+        }else if (selection == 3){
+            /*
+             cout << "Enter a first name in all caps (or 'QUIT' to exit): ";
+             cin >> enteredFirstName;
+             int foundIndex =look(players, enteredFirstName);
+             if(foundIndex >=0) {
+             players.at(foundIndex).display();
+             }else{
+             cout << "Not found";
+             }
+             */
+            cout << "3";
+        }else if (selection == 4){
+            cout << "Adding points..." << endl;
+            string country,name;
+            int points;
+            cout << "Enter Country's name(ALL CAPS) " << endl;
+            cin >> country;
+            cout << "Enter Players name(ALL CAPS) " << endl;
+            cin >> name;
+            cout << "Enter Points: " << endl;
+            cin >> points;
+            addPointsToPlayer(teams, country, name, points);
+            
+            cout << " " << endl;
+            cout << menu();
+            cout << "Enter your choice: ";
+            cin >> selection;
+            
+        }else if (selection == 0){
+            cout << "Exiting code" << endl;
+            break;
+        }else{
+            cout << "not a choice";
         }
-    }else{
-        string country,name;
-        int points;
-        cout << "Enter Country's name(ALL CAPS) " << endl;
-        cin >> country;
-        cout << "Enter Players name(ALL CAPS) " << endl;
-        cin >> name;
-        cout << "Enter Points: " << endl;
-        cin >> points;
-        addPointsToPlayer(teams, country, name, points);
-        string look;
-        cout << "Enter a country name: ";
-        cin >> look;
-        cout << " ";
-        while(look != "quit"){
-            for(int i = 0; i < teams.size(); i++){
-                if(teams.at(i).getCountry() == look){
-                    teams.at(i).display();
-                }
-            }
-            cout << "Enter a country name: ";
-            cin >> look;
-        }
-        
-        //Make vector of teams
-        //every time u make team add to vector and increase counter
     }
+         
 }
+        
