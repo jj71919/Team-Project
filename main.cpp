@@ -15,6 +15,10 @@ bool operator > (const Player& lhs, const Player& rhs) {
     return lhs.getCountry() > rhs.getCountry();
 }
 
+bool operator > (const Player& lhs, string input) {
+    return lhs.getfirstName() > input;
+}
+
 bool operator == (const Player& lhs, string rhs) {
     return lhs.getfirstName() == rhs;
 }
@@ -27,14 +31,13 @@ bool operator <= (const Player& lhs, const  string& rhs) {
 int look(vector<Player> &v,string input){
     int i;
     //Run thru vector to find player name, if name is found call function getLastname and display the player
-    for(i = 0; i < v.size() && v.at(i).getfirstName() <= input ; i++){
+    for(i = 0; i < v.size(); i++){
         if(v.at(i).getfirstName() == input){
             return i;
         }
     }
     return -1;
 }
-
 
 template <typename TYPE>
 void bubbleSort(vector<TYPE> &z, int n){
@@ -71,14 +74,13 @@ void addPointsToPlayer(vector<Team> &teams,string tName, string pName, int pts){
     }
 }
 
-int menu(){
+void menu(){
     cout<< "Select an option" << endl;
     cout << "0. TO QUIT " << endl;
     cout << "1. Display all teams " << endl;
     cout << "2. Search for team " << endl;
     cout << "3. Search for player " << endl;
     cout << "4. Add points " << endl;
-    return 0;;
 }
 
 
@@ -127,12 +129,9 @@ int main(int argc, const char * argv[]) {
         
     }
     teams.push_back(myTeam);
-    
-
     // Display menu
     int selection;
-    cout << menu();
-    
+    menu();
     // Get user input
     cout << "Enter your choice: ";
     cin >> selection;
@@ -145,7 +144,7 @@ int main(int argc, const char * argv[]) {
             }
             
             cout << " " << endl;
-            cout << menu();
+            menu();
             cout << "Enter your choice: ";
             cin >> selection;
             
@@ -162,22 +161,23 @@ int main(int argc, const char * argv[]) {
             }
             
             cout << " " << endl;
-            cout << menu();
+            menu();
             cout << "Enter your choice: ";
             cin >> selection;
             
         }else if (selection == 3){
-            /*
-             cout << "Enter a first name in all caps (or 'QUIT' to exit): ";
-             cin >> enteredFirstName;
-             int foundIndex =look(players, enteredFirstName);
-             if(foundIndex >=0) {
-             players.at(foundIndex).display();
-             }else{
-             cout << "Not found";
-             }
-             */
-            cout << "3";
+            cout << "Enter a first name in all caps: ";
+            cin >> enteredFirstName;
+            int foundIndex = look(players, enteredFirstName);
+            if(foundIndex >=0) {
+                players.at(foundIndex).display();
+            }else{
+                cout << "Player " << enteredFirstName << " NOT found" << endl;
+            }
+            cout << " " << endl;
+            menu();
+            cout << "Enter your choice: ";
+            cin >> selection;
         }else if (selection == 4){
             cout << "Adding points..." << endl;
             string country,name;
@@ -191,7 +191,7 @@ int main(int argc, const char * argv[]) {
             addPointsToPlayer(teams, country, name, points);
             
             cout << " " << endl;
-            cout << menu();
+            menu();
             cout << "Enter your choice: ";
             cin >> selection;
             
@@ -201,7 +201,9 @@ int main(int argc, const char * argv[]) {
         }else{
             cout << "not a choice";
         }
+        
     }
          
 }
         
+
