@@ -28,18 +28,15 @@ public:
         teamPlayers->at(index).setPoints( vectPlayers.at(index).getPoints());
     }
     
+    void setCountry(string);
     
-    //void addPointsToPlayer(string,string,int);
+    void clearPlayers();
     
-    Team(const Team& other) {
-            country = other.country;
-            numPlayers = other.numPlayers;
-            teamPlayers = new vector<Player>(*other.teamPlayers);
-        }
+    Team(const Team& other);
+    ~Team();
     
-        ~Team() {
-            delete teamPlayers;
-        }
+    //void addPointsToPlayer(string,string,int)
+    
     
     
 private:
