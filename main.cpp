@@ -114,20 +114,19 @@ int main(int argc, const char * argv[]) {
     
     string currCountry = players.at(0).getCountry();
     Team myTeam(currCountry);
+    myTeam.addPlayer(players.at(0));
     for(int i = 1; i < players.size() ; i++){
-        // teams.at(i).display();
         if(players.at(i).getCountry() == currCountry){
             myTeam.addPlayer(players.at(i));
         }else{
             teams.push_back(myTeam);
             currCountry = players.at(i).getCountry();
-            myTeam = Team(currCountry);
-            //Add new team to  TEAM vector here
+            myTeam.setCountry(currCountry);
+            myTeam.clearPlayers();
             myTeam.addPlayer(players.at(i));
-            i++;
         }
-        
-    }
+}
+    
     teams.push_back(myTeam);
     // Display menu
     int selection;
@@ -178,6 +177,7 @@ int main(int argc, const char * argv[]) {
             menu();
             cout << "Enter your choice: ";
             cin >> selection;
+            
         }else if (selection == 4){
             cout << "Adding points..." << endl;
             string country,name;
@@ -188,7 +188,10 @@ int main(int argc, const char * argv[]) {
             cin >> name;
             cout << "Enter Points: " << endl;
             cin >> points;
+            Team backUpteam = myTeam;
             addPointsToPlayer(teams, country, name, points);
+            backUpteam.display();
+            myTeam.display();
             
             cout << " " << endl;
             menu();
@@ -206,4 +209,3 @@ int main(int argc, const char * argv[]) {
          
 }
         
-
