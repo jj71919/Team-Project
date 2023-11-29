@@ -39,7 +39,7 @@ void Team::display() {
         teamPlayers[i].display();
     }
 }
-
+/*
 Team::Team(const Team& other) {
     this->country = other.country;
     this->numPlayers = other.numPlayers;
@@ -51,6 +51,23 @@ Team::Team(const Team& other) {
         } else {
             this->teamPlayers = nullptr;
         }
+}
+*/
+Team::Team(const Team& other) {
+    this->country = other.country;
+    this->numPlayers = other.numPlayers;
+
+    if (other.numPlayers > 0) {
+        this->teamPlayers = new Player[other.numPlayers];
+
+        // Perform a deep copy of each Player object
+        for (int i = 0; i < other.numPlayers; ++i) {
+            // Assuming Player class has its deep copy constructor defined
+            this->teamPlayers[i] = Player(other.teamPlayers[i]); // Calls Player's copy constructor
+        }
+    } else {
+        this->teamPlayers = nullptr;
+    }
 }
     
 Team::~Team() {
