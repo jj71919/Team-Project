@@ -3,8 +3,8 @@
 #include <vector>
 #include <string>
 #include <map>
-#include "Player.h"
-#include "Team.h"
+#include "Player.hpp"
+#include "Team.hpp"
 using namespace std;
 
 bool operator < (const Player& lhs, const Player& rhs) {
@@ -59,14 +59,14 @@ void bubbleSort(vector<TYPE> &z, int n){
     }
 }
 
-void addPointsToPlayer(vector<Team> &teams,string tName, string pName, int pts){
-    for(int i = 0; i < teams.size(); i++){
-        if(teams.at(i).getCountry() == tName){
-            vector<Player> vect = teams.at(i).getTeamPlayer();
-            for(int z = 0; z < teams.at(i).getNumPlayers(); z++){
-                if(vect.at(z).getfirstName() == pName){
-                    vect.at(z).addPoints(pts);
-                    teams.at(i).setPlayer(z, vect);
+void addPointsToPlayer(vector<Team> &teams, string tName, string pName, int pts) {
+    for (int i = 0; i < teams.size(); i++) {
+        if (teams[i].getCountry() == tName) {
+            Player* players = teams[i].getTeamPlayer();
+            for (int z = 0; z < teams[i].getNumPlayers(); z++) {
+                if (players[z].getfirstName() == pName) {
+                    players[z].addPoints(pts);
+                    teams[i].setPlayer(z, players[z]);
                     return;
                 }
             }
@@ -106,8 +106,42 @@ int main(int argc, const char * argv[]) {
         
     }
     
-    
-    
+    vector<Team> teams;
+    int x = players.size();
+    bubbleSort(players, x);
+
+    string currCountry = players[0].getCountry();
+    Team myTeam(currCountry);
+    myTeam.addPlayer(players[0]);
+    for (int i = 1; i < players.size(); i++) {
+        if (players[i].getCountry() == currCountry) {
+            myTeam.addPlayer(players[i]);
+        } else {
+            teams.push_back(myTeam);
+            currCountry = players[i].getCountry();
+            myTeam.setCountry(currCountry);
+            myTeam.clearPlayers();
+
+            Player* tempPlayers = new Player[1];
+            tempPlayers[0] = players[i];
+            myTeam.setPlayer(0, tempPlayers[0]);
+            delete[] tempPlayers;
+        }
+    }
+
+    int numPlayers = myTeam.getNumPlayers();
+    Player* tempPlayers = new Player[numPlayers];
+    Player* teamPlayers = myTeam.getTeamPlayer();
+    for (int i = 0; i < numPlayers; i++) {
+        tempPlayers[i] = teamPlayers[i];
+    }
+    Team newTeam(currCountry);
+    for (int i = 0; i < numPlayers; i++) {
+        newTeam.addPlayer(tempPlayers[i]);
+    }
+    teams.push_back(newTeam);
+    delete[] tempPlayers;
+    /*
     vector<Team> teams;
     int x = players.size();
     bubbleSort(players,x);
@@ -128,6 +162,7 @@ int main(int argc, const char * argv[]) {
 }
     
     teams.push_back(myTeam);
+     */
     // Display menu
     int selection;
     menu();
@@ -204,8 +239,7 @@ int main(int argc, const char * argv[]) {
         }else{
             cout << "not a choice";
         }
-        
     }
-         
 }
         
+
