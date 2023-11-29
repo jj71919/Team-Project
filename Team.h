@@ -3,7 +3,7 @@
 #endif
 #include <iostream>
 #include <string>
-#include "Player.h"
+#include "Player.hpp"
 #pragma once
 using namespace std;
 
@@ -14,33 +14,33 @@ public:
     Team(string country);
     Team(string,int,vector<Player>*);
     void display();
-    void addPlayer(Player);
-    string getCountry() const{
-        return this->country;
-    };
-    int getNumPlayers() const{
-        return numPlayers;
-    }
-    vector<Player> getTeamPlayer(){
-        return *teamPlayers;
-    }
-    void setPlayer(int index, vector<Player> vectPlayers){
-        teamPlayers->at(index).setPoints( vectPlayers.at(index).getPoints());
-    }
-    
+    void addPlayer(Player&);
     void setCountry(string);
-    
     void clearPlayers();
-    
     Team(const Team& other);
     ~Team();
     
-    //void addPointsToPlayer(string,string,int)
+    string getCountry() const{
+        return this->country;
+    };
     
+    int getNumPlayers() const{
+        return numPlayers;
+    }
     
+    Player* getTeamPlayer(){
+        return teamPlayers;
+    }
     
+    void setPlayer(int index, const Player& player) {
+            if (index >= 0 && index < numPlayers) {
+                teamPlayers[index] = player;
+            }
+        }
+
 private:
     string country;
     int numPlayers;
-    vector<Player> *teamPlayers;
+    Player* teamPlayers;
 };
+
