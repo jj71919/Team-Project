@@ -1,52 +1,63 @@
 #include <string>
 #include <vector>
 #include <stdio.h>
-#include "Player.h"
-#include "Team.h"
+#include "Player.hpp"
+#include "Team.hpp"
 
 
 
 Team::Team(string country){
     this->country = country;
     this->numPlayers = 0;
-    teamPlayers = new vector<Player>();
+    teamPlayers = nullptr;
+}
+
+void Team::setCountry(string nCountry){
+    country = nCountry;
 }
 
 void Team::clearPlayers(){
-    teamPlayers = new vector<Player>();
+    delete[] teamPlayers;
+    teamPlayers = nullptr;
+    numPlayers = 0;
  }
 
-void Team:: addPlayer(Player aPlayer){
-    this->teamPlayers->push_back(aPlayer);
-    this->numPlayers++;
+void Team::addPlayer(Player &aPlayer) {
+    Player *temp = new Player[numPlayers + 1];
+    for (int i = 0; i < numPlayers; ++i) {
+        temp[i] = teamPlayers[i];
+    }
+    temp[numPlayers] = aPlayer;
+    delete[] teamPlayers;
+    teamPlayers = temp;
+    numPlayers++;
 }
 
-void Team::display(){
-    cout << "Team name: " << country <<  endl;
-    for(int i =0; i < teamPlayers->size(); i++){
-        teamPlayers->at(i).display();
+void Team::display() {
+    cout << "Team name: " << country << endl;
+    for (int i = 0; i < numPlayers; ++i) {
+        teamPlayers[i].display();
     }
 }
 
 Team::Team(const Team& other) {
     this->country = other.country;
     this->numPlayers = other.numPlayers;
-    this->teamPlayers = other.teamPlayers;
-    //this->teamPlayers = new vector<Player>();
-        /*for (int i = 0; i < other.teamPlayers->size(); i++) {
-            Player copiedPlayer = other.teamPlayers->at(i);
-            this->teamPlayers->push_back(copiedPlayer);
+    if (other.numPlayers > 0) {
+            this->teamPlayers = new Player[other.numPlayers];
+            for (int i = 0; i < other.numPlayers; ++i) {
+                this->teamPlayers[i] = other.teamPlayers[i];
+            }
+        } else {
+            this->teamPlayers = nullptr;
         }
-         */
-    
 }
     
 Team::~Team() {
-    delete teamPlayers;
+    delete[] teamPlayers;
 }
 
-void Team::setCountry(string nCountry){
-    this->country = nCountry;
-}
+
+
 
 
