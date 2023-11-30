@@ -3,10 +3,10 @@
 #include <vector>
 #include <string>
 #include <map>
-#include "Player.hpp"
-#include "Team.hpp"
+#include "Player.h"
+#include "Team.h"
 using namespace std;
-
+//OverLoaded operators to compare player objects
 bool operator < (const Player& lhs, const Player& rhs) {
     return lhs.getCountry() < rhs.getCountry();
 }
@@ -27,7 +27,7 @@ bool operator <= (const Player& lhs, const  string& rhs) {
     return lhs.getfirstName() <= rhs;
 }
 
-
+//Function to search vector and get player off name
 int look(vector<Player> &v,string input){
     int i;
     //Run thru vector to find player name, if name is found call function getLastname and display the player
@@ -39,6 +39,7 @@ int look(vector<Player> &v,string input){
     return -1;
 }
 
+//Bubble sort templated
 template <typename TYPE>
 void bubbleSort(vector<TYPE> &z, int n){
     int i, j;
@@ -58,7 +59,8 @@ void bubbleSort(vector<TYPE> &z, int n){
             break;
     }
 }
-
+//This function add points by creating a copy of the player and add points
+//then re-add to vector
 void addPointsToPlayer(vector<Team> &teams, string tName, string pName, int pts) {
     for (int i = 0; i < teams.size(); i++) {
         if (teams[i].getCountry() == tName) {
@@ -73,14 +75,14 @@ void addPointsToPlayer(vector<Team> &teams, string tName, string pName, int pts)
         }
     }
 }
-
+// Display menu
 void menu(){
     cout<< "Select an option" << endl;
     cout << "0. TO QUIT " << endl;
-    cout << "1. Display all teams " << endl;
+    cout << "1. Assignment opperator " << endl;
     cout << "2. Search for team " << endl;
-    cout << "3. Search for player " << endl;
-    cout << "4. Add points " << endl;
+    cout << "3. Add points " << endl;
+    cout << "4. Copy " << endl;
 }
 
 
@@ -105,11 +107,11 @@ int main(int argc, const char * argv[]) {
         players.push_back(aPlayer);
         
     }
-    
+    //Initalize team vector
     vector<Team> teams;
     int x = players.size();
     bubbleSort(players, x);
-
+    //create new teams and append to team vector
     string currCountry = players[0].getCountry();
     Team myTeam(currCountry);
     myTeam.addPlayer(players[0]);
@@ -117,18 +119,19 @@ int main(int argc, const char * argv[]) {
         if (players[i].getCountry() == currCountry) {
             myTeam.addPlayer(players[i]);
         } else {
+            //If new team
             teams.push_back(myTeam);
             currCountry = players[i].getCountry();
             myTeam.setCountry(currCountry);
             myTeam.clearPlayers();
-
+            myTeam.addPlayer(players[i]);
             Player* tempPlayers = new Player[1];
             tempPlayers[0] = players[i];
             myTeam.setPlayer(0, tempPlayers[0]);
             delete[] tempPlayers;
         }
     }
-
+//Copy one team over to another using copy constructor
     int numPlayers = myTeam.getNumPlayers();
     Player* tempPlayers = new Player[numPlayers];
     Player* teamPlayers = myTeam.getTeamPlayer();
@@ -141,28 +144,7 @@ int main(int argc, const char * argv[]) {
     }
     teams.push_back(newTeam);
     delete[] tempPlayers;
-    /*
-    vector<Team> teams;
-    int x = players.size();
-    bubbleSort(players,x);
-    
-    string currCountry = players.at(0).getCountry();
-    Team myTeam(currCountry);
-    myTeam.addPlayer(players.at(0));
-    for(int i = 1; i < players.size() ; i++){
-        if(players.at(i).getCountry() == currCountry){
-            myTeam.addPlayer(players.at(i));
-        }else{
-            teams.push_back(myTeam);
-            currCountry = players.at(i).getCountry();
-            myTeam.setCountry(currCountry);
-            myTeam.clearPlayers();
-            myTeam.addPlayer(players.at(i));
-        }
-}
-    
-    teams.push_back(myTeam);
-     */
+     
     // Display menu
     int selection;
     menu();
@@ -172,10 +154,12 @@ int main(int argc, const char * argv[]) {
     while(selection != 0){
         // Switch statement
         if(selection == 1){
-            cout << "Displaying all teams..." << endl;
-            for(int i = 0; i < teams.size(); i++){
-                teams.at(i).display();
-            }
+            Team myTeam = teams.at(0);
+            Team backUpTeam = myTeam;
+            addPointsToPlayer(teams, "???", "ALEXANDROVA", 5000);
+            cout << "Original Team" << endl;
+            teams.at(0).display();
+            backUpTeam.display();
             
             cout << " " << endl;
             menu();
@@ -200,20 +184,6 @@ int main(int argc, const char * argv[]) {
             cin >> selection;
             
         }else if (selection == 3){
-            cout << "Enter a first name in all caps: ";
-            cin >> enteredFirstName;
-            int foundIndex = look(players, enteredFirstName);
-            if(foundIndex >=0) {
-                players.at(foundIndex).display();
-            }else{
-                cout << "Player " << enteredFirstName << " NOT found" << endl;
-            }
-            cout << " " << endl;
-            menu();
-            cout << "Enter your choice: ";
-            cin >> selection;
-            
-        }else if (selection == 4){
             cout << "Adding points..." << endl;
             string country,name;
             int points;
@@ -226,7 +196,21 @@ int main(int argc, const char * argv[]) {
             Team backUpteam = myTeam;
             addPointsToPlayer(teams, country, name, points);
             backUpteam.display();
-            myTeam.display();
+            
+            
+            cout << " " << endl;
+            menu();
+            cout << "Enter your choice: ";
+            cin >> selection;
+            
+            
+        }else if (selection == 4){
+            Team myTeam = teams.at(1);
+            Team backUpTeam(myTeam);
+            addPointsToPlayer(teams, "AUS", "DARIA", 1000);
+            cout << "Original Team" << endl;
+            teams.at(1).display();
+            backUpTeam.display();
             
             cout << " " << endl;
             menu();
@@ -241,5 +225,8 @@ int main(int argc, const char * argv[]) {
         }
     }
 }
+        
+
+
         
 
